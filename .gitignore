@@ -163,3 +163,5 @@ cython_debug/
 .ok*
 # 听课时随便写的测试
 test/
+# 作业框架生成的测试文件
+tests/
