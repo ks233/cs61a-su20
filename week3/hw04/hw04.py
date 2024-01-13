@@ -44,11 +44,13 @@ def planet(size):
     """Construct a planet of some size."""
     assert size > 0
     "*** YOUR CODE HERE ***"
+    return ['planet', size]
 
 def size(w):
     """Select the size of a planet."""
     assert is_planet(w), 'must call size on a planet'
     "*** YOUR CODE HERE ***"
+    return w[1]
 
 def is_planet(w):
     """Whether w is a planet."""
@@ -105,6 +107,24 @@ def balanced(m):
     True
     """
     "*** YOUR CODE HERE ***"
+    l_arm = left(m)
+    r_arm = right(m)
+    l_end = end(l_arm)
+    r_end = end(r_arm)
+    l_len = length(l_arm)
+    r_len = length(r_arm)
+    # 递归出口
+    if is_planet(l_end) and is_planet(r_end):
+        return size(l_end) * l_len == size(r_end) * r_len
+    # 左边平衡 and 右边平衡 and 两端平衡
+    if is_mobile(l_end) and is_mobile(r_end):
+        return balanced(l_end) and balanced(r_end) and total_weight(l_end) * l_len == total_weight(r_end) * r_len
+    if is_mobile(l_end) and is_planet(r_end):
+        return balanced(l_end) and total_weight(l_end) * l_len == size(r_end) * r_len
+    if is_planet(l_end) and is_mobile(r_end):
+        return balanced(r_end) and size(l_end) * l_len == total_weight(r_end) * r_len
+    
+
 
 def totals_tree(m):
     """Return a tree representing the mobile with its total weight at the root.
@@ -136,6 +156,16 @@ def totals_tree(m):
     True
     """
     "*** YOUR CODE HERE ***"
+    if is_planet(m):
+        return tree(size(m))
+    l_arm = left(m)
+    r_arm = right(m)
+    l_end = end(l_arm)
+    r_end = end(r_arm)
+    lb = totals_tree(l_end)
+    rb = totals_tree(r_end)
+    return tree(label(lb) + label(rb), [lb, rb])
+
 
 
 def replace_leaf(t, find_value, replace_value):
@@ -168,6 +198,12 @@ def replace_leaf(t, find_value, replace_value):
     True
     """
     "*** YOUR CODE HERE ***"
+    if is_leaf(t):
+        if label(t) == find_value:
+            return tree(replace_value)
+        else:
+            return tree(label(t))
+    return tree(label(t),[replace_leaf(b, find_value, replace_value) for b in branches(t)])
 
 
 def preorder(t):
@@ -181,6 +217,10 @@ def preorder(t):
     [2, 4, 6]
     """
     "*** YOUR CODE HERE ***"
+    if is_leaf(t):
+        return [label(t)]
+    # 别忘了 sum 的 start 参数默认是 0，要设置成 []，否则 int+list 会报 TypeError
+    return [label(t)] + sum([preorder(b) for b in branches(t)],start=[])
 
 
 def has_path(t, phrase):
@@ -213,7 +253,21 @@ def has_path(t, phrase):
     """
     assert len(phrase) > 0, 'no path for empty phrases.'
     "*** YOUR CODE HERE ***"
-
+    # 当前字符不对的直接排除
+    if label(t) != phrase[0]:
+        return False
+    # 递归出口 1：最后一个字符
+    if len(phrase) == 1:
+        return label(t) == phrase
+    # 递归出口 2：不是最后一个字符，但树的深度已经到头了
+    if is_leaf(t):
+        return False
+    # 函数返回 True 的唯一情况就是 phrase 只剩下最后一个字符，并且和树根相同
+    for b in branches(t):    
+        # 整个递归过程中，但凡有一个返回 True 就表明路径存在
+        if has_path(b, phrase[1:]):
+            return True
+    return False
 
 def interval(a, b):
     """Construct an interval from a to b."""
