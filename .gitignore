@@ -159,7 +159,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# 评测系统 ok 生成的临时文件
+# 评测系统 ok 及其生成的临时文件
+ok
 .ok*
 # 听课时随便写的测试
 test/
