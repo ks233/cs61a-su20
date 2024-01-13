@@ -17,6 +17,8 @@ def choose(paragraphs, select, k):
     """
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
+    selected = [p for p in paragraphs if select(p)]    
+    return selected[k] if len(selected) > k else ''
     # END PROBLEM 1
 
 
@@ -33,6 +35,7 @@ def about(topic):
     assert all([lower(x) == x for x in topic]), 'topics should be lowercase.'
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
+    return lambda s : any([x in split(remove_punctuation(lower(s))) for x in topic])
     # END PROBLEM 2
 
 
@@ -57,6 +60,14 @@ def accuracy(typed, reference):
     reference_words = split(reference)
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
+    if len(reference_words) == 0 or len(typed_words) == 0:
+        return 0.0
+    num = 0.0
+    denom = len(typed_words)
+    for i in range(min(len(typed_words), len(reference_words))):
+        if typed_words[i] == reference_words[i]:
+            num += 1
+    return num / denom * 100
     # END PROBLEM 3
 
 
@@ -65,6 +76,7 @@ def wpm(typed, elapsed):
     assert elapsed > 0, 'Elapsed time must be positive'
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    return len(typed) / 5.0 * 60.0 / elapsed
     # END PROBLEM 4
 
 
@@ -75,6 +87,11 @@ def autocorrect(user_word, valid_words, diff_function, limit):
     """
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    if user_word in valid_words:
+        return user_word
+    # min还能这么用，妙啊
+    min_word = min(valid_words, key=lambda x:diff_function(user_word,x,limit))
+    return min_word if diff_function(user_word, min_word, limit) <= limit else user_word
     # END PROBLEM 5
 
 
@@ -84,13 +101,19 @@ def shifty_shifts(start, goal, limit):
     their lengths.
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+    # assert False, 'Remove this line'
+    if start == '' or goal == '':
+        return max(len(start), len(goal))
+    check = int(start[0] != goal[0])
+    if limit < 0:
+        return check
+    return check + shifty_shifts(start[1:], goal[1:], limit - check)
     # END PROBLEM 6
 
 
 def meowstake_matches(start, goal, limit):
     """A diff function that computes the edit distance from START to GOAL."""
-    assert False, 'Remove this line'
+    # assert False, 'Remove this line'
 
     if ______________: # Fill in the condition
         # BEGIN
