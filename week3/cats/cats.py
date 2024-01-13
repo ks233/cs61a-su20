@@ -149,6 +149,14 @@ def report_progress(typed, prompt, id, send):
     """Send a report of your id and progress so far to the multiplayer server."""
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    correct = 0
+    for i in range(min(len(typed), len(prompt))):
+        if typed[i] != prompt[i]:
+            break
+        correct += 1
+    progress = correct / len(prompt)
+    send({'id': id, 'progress': progress})
+    return progress
     # END PROBLEM 8
 
 
@@ -175,6 +183,8 @@ def time_per_word(times_per_player, words):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    times = [[(t[i+1] - t[i]) for i in range(len(t)-1)] for t in times_per_player]
+    return game(words, times)
     # END PROBLEM 9
 
 
@@ -190,6 +200,28 @@ def fastest_words(game):
     words = range(len(all_words(game)))    # An index for each word
     # BEGIN PROBLEM 10
     "*** YOUR CODE HERE ***"
+    fastest_list = [[] for _ in players] # 写 [[]] * n 会创建好几个对相同空列表的引用，这么写才是创建多个不同的列表
+    ''' 丑陋的 for 循环。。。
+    for word_index in words:
+        fastest_player = 0
+        fastest_time = time(game, 0, word_index)
+        for player_index in players:
+            if time(game, player_index, word_index) < fastest_time:
+                fastest_player = player_index
+                fastest_time = time(game, player_index, word_index)
+        fastest_list[fastest_player].append(word_at(game, word_index))
+    return fastest_list
+    '''
+
+    '''这个更加丑陋了。。。而且性能比较差，因为 min 重复计算了
+    return [[word_at(game, word_index) for word_index in words if player_index==min(players, key=lambda x: time(game, x, word_index))] for player_index in players]
+    '''
+
+    # 这个还不错，比较有可读性
+    for word_index in words:
+        fastest_player = min(players, key=lambda x: time(game, x, word_index))
+        fastest_list[fastest_player].append(word_at(game, word_index))
+    return fastest_list
     # END PROBLEM 10
 
 
