@@ -49,6 +49,20 @@ def make_fib():
     True
     """
     "*** YOUR CODE HERE ***"
+    a = 0
+    b = 1
+    begin = -1
+    def fib():
+        nonlocal a, b, begin
+        # 前两个数是 0 和 1
+        if begin < 1:
+            begin += 1
+            return begin
+        # 之后的序列
+        c = a + b
+        a, b = b, c
+        return c
+    return fib
 
 
 def insert_items(lst, entry, elem):
