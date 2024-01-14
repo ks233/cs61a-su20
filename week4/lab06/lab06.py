@@ -82,4 +82,9 @@ def insert_items(lst, entry, elem):
     True
     """
     "*** YOUR CODE HERE ***"
-
+    indicies = [i for i in range(len(lst)) if lst[i] == entry]
+    offset = 0
+    for i in indicies:
+        offset += 1
+        lst.insert(i + offset, elem)
+    return lst
