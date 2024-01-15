@@ -104,6 +104,16 @@ def repeated(t, k):
     """
     assert k > 1
     "*** YOUR CODE HERE ***"
+    count = 1
+    last_item = 0
+    for item in t:
+        if item == last_item:
+            count += 1
+        else:
+            count = 1
+            last_item = item
+        if count == k:
+            return item
 
 
 def merge(incr_a, incr_b):
