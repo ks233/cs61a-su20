@@ -21,6 +21,17 @@ def make_bank(balance):
 
     def bank(message, amount):
         "*** YOUR CODE HERE ***"
+        nonlocal balance
+        if message == "withdraw":
+            if amount > balance:
+                return "Insufficient funds"
+            balance -= amount
+            return balance
+        elif message == "deposit":
+            balance += amount
+            return balance
+        else:
+            return "Invalid message"
 
     return bank
 
@@ -54,6 +65,21 @@ def make_withdraw(balance, password):
     True
     """
     "*** YOUR CODE HERE ***"
+    wrong_attempts = []
+
+    def withdraw(amount, pw):
+        nonlocal balance, password, wrong_attempts
+        if len(wrong_attempts) >= 3:
+            return f"Too many incorrect attempts. Attempts: {wrong_attempts}"
+        if pw != password:
+            wrong_attempts.append(pw)
+            return "Incorrect password"
+        if amount > balance:
+            return "Insufficient funds"
+        balance -= amount
+        return balance
+
+    return withdraw
 
 
 def repeated(t, k):
