@@ -108,6 +108,8 @@ def reverse(lst):
     [-8, 72, 42]
     """
     "*** YOUR CODE HERE ***"
+    for i in range(len(lst)):
+        lst.append(lst.pop(len(lst)-1-i))
 
 
 cs61a = {
