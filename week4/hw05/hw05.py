@@ -137,6 +137,35 @@ def merge(incr_a, incr_b):
     next_a, next_b = next(iter_a, None), next(iter_b, None)
     "*** YOUR CODE HERE ***"
 
+    # 怎么写得这么长。。。感觉可以优化
+
+    def next_neq_value(iter, value):
+        next_value = next(iter, None)
+        if next_value == None:
+            return None
+        while next_value == value:
+            next_value = next(iter, None)
+        return next_value
+
+    while next_a != None and next_b != None:
+        if next_a < next_b:
+            yield next_a
+            next_a = next_neq_value(iter_a, next_a)
+        elif next_a > next_b:
+            yield next_b
+            next_b = next_neq_value(iter_b, next_b)
+        else:
+            yield next_a
+            next_a = next_neq_value(iter_a, next_a)
+            next_b = next_neq_value(iter_b, next_b)
+
+    if next_a is None:
+        yield next_b
+        yield from iter_b
+    elif next_b is None:
+        yield next_a
+        yield from iter_a
+
 
 def make_joint(withdraw, old_pass, new_pass):
     """Return a password-protected withdraw function that has joint access to
