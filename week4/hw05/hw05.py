@@ -18,8 +18,10 @@ def make_bank(balance):
     >>> bank('withdraw', 60)    # 180 - 60
     120
     """
+
     def bank(message, amount):
         "*** YOUR CODE HERE ***"
+
     return bank
 
 
@@ -189,4 +191,3 @@ def naturals():
     while True:
         yield i
         i += 1
-
