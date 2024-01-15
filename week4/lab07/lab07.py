@@ -19,7 +19,7 @@ def subseqs(s):
     >>> subseqs([])
     [[]]
     """
-    if len(s) == 0:
+    if not s:
         return [[]]
     else:
         return insert_into_all(s[0], subseqs(s[1:])) + subseqs(s[1:])
@@ -39,16 +39,17 @@ def inc_subseqs(s):
     >>> sorted(seqs2)
     [[], [1], [1], [1, 1], [1, 1, 2], [1, 2], [1, 2], [2]]
     """
+    # 还没想出来，这题先跳了
     def subseq_helper(s, prev):
         if not s:
-            return ____________________
+            return [[]]
         elif s[0] < prev:
-            return ____________________
+            return subseq_helper(s[1:], s[0])
         else:
-            a = ______________________
-            b = ______________________
-            return insert_into_all(________, ______________) + ________________
-    return subseq_helper(____, ____)
+            a = s[0]
+            b = s[1:]
+            return insert_into_all(a, subseq_helper(b, a)) + [b]
+    return subseq_helper(s, s[0])
 
 
 def trade(first, second):
@@ -80,9 +81,9 @@ def trade(first, second):
     """
     m, n = 1, 1
 
-    equal_prefix = lambda: ______________________
-    while _______________________________:
-        if __________________:
+    equal_prefix = lambda: sum(first[:m]) == sum(second[:n])
+    while not equal_prefix() and m < len(first) and n < len(second):
+        if sum(first[:m]) < sum(second[:n]):
             m += 1
         else:
             n += 1
