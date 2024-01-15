@@ -9,6 +9,7 @@ def insert_into_all(item, nested_list):
     """
     return [[item] + l for l in nested_list]
 
+
 def subseqs(s):
     """Assuming that S is a list, return a nested list of all subsequences
     of S (a list of lists). The subsequences can appear in any order.
@@ -39,6 +40,7 @@ def inc_subseqs(s):
     >>> sorted(seqs2)
     [[], [1], [1], [1, 1], [1, 1, 2], [1, 2], [1, 2], [2]]
     """
+
     # 还没想出来，这题先跳了
     def subseq_helper(s, prev):
         if not s:
@@ -49,6 +51,7 @@ def inc_subseqs(s):
             a = s[0]
             b = s[1:]
             return insert_into_all(a, subseq_helper(b, a)) + [b]
+
     return subseq_helper(s, s[0])
 
 
@@ -90,9 +93,9 @@ def trade(first, second):
 
     if equal_prefix():
         first[:m], second[:n] = second[:n], first[:m]
-        return 'Deal!'
+        return "Deal!"
     else:
-        return 'No deal!'
+        return "No deal!"
 
 
 def reverse(lst):
@@ -109,7 +112,7 @@ def reverse(lst):
     """
     "*** YOUR CODE HERE ***"
     for i in range(len(lst)):
-        lst.append(lst.pop(len(lst)-1-i))
+        lst.append(lst.pop(len(lst) - 1 - i))
 
 
 cs61a = {
@@ -121,11 +124,12 @@ cs61a = {
     "PJ2": 15,
     "PJ3": 25,
     "PJ4": 30,
-    "Extra credit": 0
+    "Extra credit": 0,
 }
 
+
 def make_glookup(class_assignments):
-    """ Returns a function which calculates and returns the current
+    """Returns a function which calculates and returns the current
     grade out of what assignments have been entered so far.
 
     >>> student1 = make_glookup(cs61a) # cs61a is the above dictionary
@@ -194,12 +198,15 @@ def make_advanced_counter_maker():
     1
     """
     ________________
+
     def ____________(__________):
         ________________
+
         def ____________(__________):
             ________________
             "*** YOUR CODE HERE ***"
             # as many lines as you want
-        ________________
-    ________________
 
+        ________________
+
+    ________________
