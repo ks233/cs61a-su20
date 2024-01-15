@@ -7,7 +7,8 @@ def insert_into_all(item, nested_list):
     >>> insert_into_all(0, nl)
     [[0], [0, 1, 2], [0, 3]]
     """
-    return ______________________________
+    return [[item] + l for l in nested_list]
+
 
 def subseqs(s):
     """Assuming that S is a list, return a nested list of all subsequences
@@ -19,11 +20,10 @@ def subseqs(s):
     >>> subseqs([])
     [[]]
     """
-    if ________________:
-        ________________
+    if not s:
+        return [[]]
     else:
-        ________________
-        ________________
+        return insert_into_all(s[0], subseqs(s[1:])) + subseqs(s[1:])
 
 
 def inc_subseqs(s):
@@ -40,16 +40,19 @@ def inc_subseqs(s):
     >>> sorted(seqs2)
     [[], [1], [1], [1, 1], [1, 1, 2], [1, 2], [1, 2], [2]]
     """
+
+    # 试了一天终于通过了，但是为啥嘞？？？
     def subseq_helper(s, prev):
         if not s:
-            return ____________________
+            return [[]]
         elif s[0] < prev:
-            return ____________________
+            return subseq_helper(s[1:], prev)
         else:
-            a = ______________________
-            b = ______________________
-            return insert_into_all(________, ______________) + ________________
-    return subseq_helper(____, ____)
+            a = subseq_helper(s[1:], s[0])
+            b = subseq_helper(s[1:], prev)
+            return insert_into_all(s[0], a) + b
+
+    return subseq_helper(s, s[0] if s else 0)
 
 
 def trade(first, second):
@@ -81,18 +84,18 @@ def trade(first, second):
     """
     m, n = 1, 1
 
-    equal_prefix = lambda: ______________________
-    while _______________________________:
-        if __________________:
+    equal_prefix = lambda: sum(first[:m]) == sum(second[:n])
+    while not equal_prefix() and m < len(first) and n < len(second):
+        if sum(first[:m]) < sum(second[:n]):
             m += 1
         else:
             n += 1
 
     if equal_prefix():
         first[:m], second[:n] = second[:n], first[:m]
-        return 'Deal!'
+        return "Deal!"
     else:
-        return 'No deal!'
+        return "No deal!"
 
 
 def reverse(lst):
@@ -108,6 +111,8 @@ def reverse(lst):
     [-8, 72, 42]
     """
     "*** YOUR CODE HERE ***"
+    for i in range(len(lst)):
+        lst.append(lst.pop(len(lst) - 1 - i))
 
 
 cs61a = {
@@ -119,11 +124,12 @@ cs61a = {
     "PJ2": 15,
     "PJ3": 25,
     "PJ4": 30,
-    "Extra credit": 0
+    "Extra credit": 0,
 }
 
+
 def make_glookup(class_assignments):
-    """ Returns a function which calculates and returns the current
+    """Returns a function which calculates and returns the current
     grade out of what assignments have been entered so far.
 
     >>> student1 = make_glookup(cs61a) # cs61a is the above dictionary
@@ -135,6 +141,16 @@ def make_glookup(class_assignments):
     0.8913043478260869
     """
     "*** YOUR CODE HERE ***"
+    num = 0
+    denom = 0
+
+    def glookup(key, score):
+        nonlocal class_assignments, num, denom
+        num += score
+        denom += class_assignments[key]
+        return num / denom
+
+    return glookup
 
 
 def num_trees(n):
@@ -192,12 +208,15 @@ def make_advanced_counter_maker():
     1
     """
     ________________
+
     def ____________(__________):
         ________________
+
         def ____________(__________):
             ________________
             "*** YOUR CODE HERE ***"
             # as many lines as you want
-        ________________
-    ________________
 
+        ________________
+
+    ________________

@@ -18,8 +18,21 @@ def make_bank(balance):
     >>> bank('withdraw', 60)    # 180 - 60
     120
     """
+
     def bank(message, amount):
         "*** YOUR CODE HERE ***"
+        nonlocal balance
+        if message == "withdraw":
+            if amount > balance:
+                return "Insufficient funds"
+            balance -= amount
+            return balance
+        elif message == "deposit":
+            balance += amount
+            return balance
+        else:
+            return "Invalid message"
+
     return bank
 
 
@@ -52,6 +65,21 @@ def make_withdraw(balance, password):
     True
     """
     "*** YOUR CODE HERE ***"
+    wrong_attempts = []
+
+    def withdraw(amount, pw):
+        nonlocal balance, password, wrong_attempts
+        if len(wrong_attempts) >= 3:
+            return f"Too many incorrect attempts. Attempts: {wrong_attempts}"
+        if pw != password:
+            wrong_attempts.append(pw)
+            return "Incorrect password"
+        if amount > balance:
+            return "Insufficient funds"
+        balance -= amount
+        return balance
+
+    return withdraw
 
 
 def repeated(t, k):
@@ -76,6 +104,16 @@ def repeated(t, k):
     """
     assert k > 1
     "*** YOUR CODE HERE ***"
+    count = 1
+    last_item = 0
+    for item in t:
+        if item == last_item:
+            count += 1
+        else:
+            count = 1
+            last_item = item
+        if count == k:
+            return item
 
 
 def merge(incr_a, incr_b):
@@ -98,6 +136,35 @@ def merge(incr_a, incr_b):
     iter_a, iter_b = iter(incr_a), iter(incr_b)
     next_a, next_b = next(iter_a, None), next(iter_b, None)
     "*** YOUR CODE HERE ***"
+
+    # 怎么写得这么长。。。感觉可以优化
+
+    def next_neq_value(iter, value):
+        next_value = next(iter, None)
+        if next_value == None:
+            return None
+        while next_value == value:
+            next_value = next(iter, None)
+        return next_value
+
+    while next_a != None and next_b != None:
+        if next_a < next_b:
+            yield next_a
+            next_a = next_neq_value(iter_a, next_a)
+        elif next_a > next_b:
+            yield next_b
+            next_b = next_neq_value(iter_b, next_b)
+        else:
+            yield next_a
+            next_a = next_neq_value(iter_a, next_a)
+            next_b = next_neq_value(iter_b, next_b)
+
+    if next_a is None:
+        yield next_b
+        yield from iter_b
+    elif next_b is None:
+        yield next_a
+        yield from iter_a
 
 
 def make_joint(withdraw, old_pass, new_pass):
@@ -189,4 +256,3 @@ def naturals():
     while True:
         yield i
         i += 1
-
