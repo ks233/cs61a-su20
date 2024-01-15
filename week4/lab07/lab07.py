@@ -141,6 +141,16 @@ def make_glookup(class_assignments):
     0.8913043478260869
     """
     "*** YOUR CODE HERE ***"
+    num = 0
+    denom = 0
+
+    def glookup(key, score):
+        nonlocal class_assignments, num, denom
+        num += score
+        denom += class_assignments[key]
+        return num / denom
+
+    return glookup
 
 
 def num_trees(n):
