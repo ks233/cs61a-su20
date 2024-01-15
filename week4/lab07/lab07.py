@@ -41,18 +41,18 @@ def inc_subseqs(s):
     [[], [1], [1], [1, 1], [1, 1, 2], [1, 2], [1, 2], [2]]
     """
 
-    # 还没想出来，这题先跳了
+    # 试了一天终于通过了，但是为啥嘞？？？
     def subseq_helper(s, prev):
         if not s:
             return [[]]
         elif s[0] < prev:
-            return subseq_helper(s[1:], s[0])
+            return subseq_helper(s[1:], prev)
         else:
-            a = s[0]
-            b = s[1:]
-            return insert_into_all(a, subseq_helper(b, a)) + [b]
+            a = subseq_helper(s[1:], s[0])
+            b = subseq_helper(s[1:], prev)
+            return insert_into_all(s[0], a) + b
 
-    return subseq_helper(s, s[0])
+    return subseq_helper(s, s[0] if s else 0)
 
 
 def trade(first, second):
