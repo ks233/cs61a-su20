@@ -6,6 +6,8 @@
 
 ## 进度
 
-橙色高亮的是待观看的 Video、待完成的 Lab/Homework/Project，绿色的是已完成的项目。
+🟧：待观看的 Video、待完成的 Lab / Homework / Project
+
+🟩：已完成的项目
 
 ![progress](README/progress.png)
