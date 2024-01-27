@@ -8,6 +8,13 @@ def convert_link(link):
     []
     """
     "*** YOUR CODE HERE ***"
+    if link is Link.empty:
+        return []
+    l = []
+    while link is not Link.empty:
+        l.append(link.first)
+        link = link.rest
+    return l
 
 
 def every_other(s):
@@ -28,6 +35,12 @@ def every_other(s):
     Link(4)
     """
     "*** YOUR CODE HERE ***"
+    while s.rest is not Link.empty:
+        if s.rest.rest is Link.empty:
+            s.rest = Link.empty
+            return
+        s.rest = s.rest.rest
+        s = s.rest
 
 
 def label_squarer(t):
@@ -39,6 +52,9 @@ def label_squarer(t):
     Tree(1, [Tree(9, [Tree(25)]), Tree(49)])
     """
     "*** YOUR CODE HERE ***"
+    t.label = t.label ** 2
+    for b in t.branches:
+        label_squarer(b)
 
 
 def cumulative_mul(t):
@@ -51,6 +67,11 @@ def cumulative_mul(t):
     Tree(105, [Tree(15, [Tree(5)]), Tree(7)])
     """
     "*** YOUR CODE HERE ***"
+    def helper(t):
+        for b in t.branches:
+            t.label *= helper(b)
+        return t.label
+    helper(t)
 
 
 def has_cycle(link):
@@ -68,6 +89,7 @@ def has_cycle(link):
     False
     """
     "*** YOUR CODE HERE ***"
+
 
 def has_cycle_constant(link):
     """Return whether link contains a cycle.
@@ -119,6 +141,7 @@ class Link:
     >>> print(s)                             # Prints str(s)
     <5 7 <8 9>>
     """
+
     empty = ()
 
     def __init__(self, first, rest=empty):
@@ -128,17 +151,17 @@ class Link:
 
     def __repr__(self):
         if self.rest is not Link.empty:
-            rest_repr = ', ' + repr(self.rest)
+            rest_repr = ", " + repr(self.rest)
         else:
-            rest_repr = ''
-        return 'Link(' + repr(self.first) + rest_repr + ')'
+            rest_repr = ""
+        return "Link(" + repr(self.first) + rest_repr + ")"
 
     def __str__(self):
-        string = '<'
+        string = "<"
         while self.rest is not Link.empty:
-            string += str(self.first) + ' '
+            string += str(self.first) + " "
             self = self.rest
-        return string + str(self.first) + '>'
+        return string + str(self.first) + ">"
 
 
 class Tree:
@@ -151,6 +174,7 @@ class Tree:
     >>> t.branches[1].is_leaf()
     True
     """
+
     def __init__(self, label, branches=[]):
         for b in branches:
             assert isinstance(b, Tree)
@@ -202,16 +226,16 @@ class Tree:
 
     def __repr__(self):
         if self.branches:
-            branch_str = ', ' + repr(self.branches)
+            branch_str = ", " + repr(self.branches)
         else:
-            branch_str = ''
-        return 'Tree({0}{1})'.format(self.label, branch_str)
+            branch_str = ""
+        return "Tree({0}{1})".format(self.label, branch_str)
 
     def __str__(self):
         def print_tree(t, indent=0):
-            tree_str = '  ' * indent + str(t.label) + "\n"
+            tree_str = "  " * indent + str(t.label) + "\n"
             for b in t.branches:
                 tree_str += print_tree(b, indent + 1)
             return tree_str
-        return print_tree(self).rstrip()
 
+        return print_tree(self).rstrip()
