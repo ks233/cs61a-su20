@@ -1,5 +1,4 @@
-
-passphrase = '*** PASSPHRASE HERE ***'
+passphrase = "*** PASSPHRASE HERE ***"
 
 
 def survey(p):
@@ -9,7 +8,8 @@ def survey(p):
     'bb4279ef9763aeadeeeb401258aef409493f08a6e7457ecc2bbeb5db'
     """
     import hashlib
-    return hashlib.sha224(p.encode('utf-8')).hexdigest()
+
+    return hashlib.sha224(p.encode("utf-8")).hexdigest()
 
 
 class VendingMachine:
@@ -49,7 +49,9 @@ class VendingMachine:
     >>> w.vend()
     'Here is your soda.'
     """
+
     "*** YOUR CODE HERE ***"
+
     def __init__(self, name, price):
         self.stock = 0
         self.name = name
@@ -58,28 +60,28 @@ class VendingMachine:
 
     def vend(self):
         if self.stock == 0:
-            return 'Inventory empty. Restocking required.'
+            return "Inventory empty. Restocking required."
         if self.funds < self.price:
-            return f'You must add ${self.price - self.funds} more funds.'
+            return f"You must add ${self.price - self.funds} more funds."
         if self.funds == self.price:
             self.funds = 0
             self.stock -= 1
-            return f'Here is your {self.name}.'
+            return f"Here is your {self.name}."
         change = self.funds - self.price
         self.funds = 0
         self.stock -= 1
-        return f'Here is your {self.name} and ${change} change.'
-        
-    
+        return f"Here is your {self.name} and ${change} change."
+
     def add_funds(self, funds):
         if self.stock == 0:
-            return f'Inventory empty. Restocking required. Here is your ${funds}.'
+            return f"Inventory empty. Restocking required. Here is your ${funds}."
         self.funds += funds
-        return f'Current balance: ${self.funds}'
+        return f"Current balance: ${self.funds}"
 
     def restock(self, stock):
         self.stock += stock
-        return f'Current {self.name} stock: {self.stock}'
+        return f"Current {self.name} stock: {self.stock}"
+
 
 class Mint:
     """A mint creates coins by stamping on years.
@@ -110,6 +112,7 @@ class Mint:
     >>> dime.worth()     # 20 cents + (155 - 50 years)
     125
     """
+
     current_year = 2020
 
     def __init__(self):
@@ -123,6 +126,7 @@ class Mint:
         "*** YOUR CODE HERE ***"
         self.year = Mint.current_year
 
+
 class Coin:
     def __init__(self, year):
         self.year = year
@@ -131,8 +135,10 @@ class Coin:
         "*** YOUR CODE HERE ***"
         return type(self).cents + max(0, Mint.current_year - self.year - 50)
 
+
 class Nickel(Coin):
     cents = 5
+
 
 class Dime(Coin):
     cents = 10
@@ -164,6 +170,30 @@ def is_bst(t):
     False
     """
     "*** YOUR CODE HERE ***"
+
+    def bst_min(t):
+        if t.is_leaf():
+            return t.label
+        return min(t.label, *[bst_min(b) for b in t.branches])
+
+    def bst_max(t):
+        if t.is_leaf():
+            return t.label
+        return max(t.label, *[bst_max(b) for b in t.branches])
+
+    if t.is_leaf():
+        return True
+    if len(t.branches) > 2:
+        return False
+    if len(t.branches) == 1:
+        return is_bst(t.branches[0])
+
+    # 感觉复杂度又爆炸了。。。
+    return (
+        bst_max(t.branches[0]) <= t.label < bst_min(t.branches[1])
+        and is_bst(t.branches[0])
+        and is_bst(t.branches[1])
+    )
 
 
 def store_digits(n):
@@ -223,11 +253,10 @@ def path_yielder(t, value):
 
     for _______________ in _________________:
         for _______________ in _________________:
-
             "*** YOUR CODE HERE ***"
 
 
-def remove_all(link , value):
+def remove_all(link, value):
     """Remove all the nodes containing value in link. Assume that the
     first element is never removed.
 
@@ -273,6 +302,7 @@ class Tree:
     >>> t.branches[1].is_leaf()
     True
     """
+
     def __init__(self, label, branches=[]):
         for b in branches:
             assert isinstance(b, Tree)
@@ -324,17 +354,18 @@ class Tree:
 
     def __repr__(self):
         if self.branches:
-            branch_str = ', ' + repr(self.branches)
+            branch_str = ", " + repr(self.branches)
         else:
-            branch_str = ''
-        return 'Tree({0}{1})'.format(self.label, branch_str)
+            branch_str = ""
+        return "Tree({0}{1})".format(self.label, branch_str)
 
     def __str__(self):
         def print_tree(t, indent=0):
-            tree_str = '  ' * indent + str(t.label) + "\n"
+            tree_str = "  " * indent + str(t.label) + "\n"
             for b in t.branches:
                 tree_str += print_tree(b, indent + 1)
             return tree_str
+
         return print_tree(self).rstrip()
 
 
@@ -358,6 +389,7 @@ class Link:
     >>> print(s)                             # Prints str(s)
     <5 7 <8 9>>
     """
+
     empty = ()
 
     def __init__(self, first, rest=empty):
@@ -367,15 +399,14 @@ class Link:
 
     def __repr__(self):
         if self.rest is not Link.empty:
-            rest_repr = ', ' + repr(self.rest)
+            rest_repr = ", " + repr(self.rest)
         else:
-            rest_repr = ''
-        return 'Link(' + repr(self.first) + rest_repr + ')'
+            rest_repr = ""
+        return "Link(" + repr(self.first) + rest_repr + ")"
 
     def __str__(self):
-        string = '<'
+        string = "<"
         while self.rest is not Link.empty:
-            string += str(self.first) + ' '
+            string += str(self.first) + " "
             self = self.rest
-        return string + str(self.first) + '>'
-
+        return string + str(self.first) + ">"
