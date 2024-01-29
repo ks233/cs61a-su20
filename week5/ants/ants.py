@@ -146,6 +146,7 @@ class HarvesterAnt(Ant):
     implemented = True
     # OVERRIDE CLASS ATTRIBUTES HERE
     food_cost = 2
+
     def action(self, gamestate):
         """Produce 1 additional food for the colony.
 
@@ -165,6 +166,7 @@ class ThrowerAnt(Ant):
     damage = 1
     # ADD/OVERRIDE CLASS ATTRIBUTES HERE
     food_cost = 3
+
     def nearest_bee(self, beehive):
         """Return the nearest Bee in a Place that is not the HIVE, connected to
         the ThrowerAnt's Place by following entrances.
@@ -172,7 +174,12 @@ class ThrowerAnt(Ant):
         This method returns None if there is no such Bee (or none in range).
         """
         # BEGIN Problem 3 and 4
-        return rANTdom_else_none(self.place.bees)  # REPLACE THIS LINE
+        p: Place = self.place
+        while p is not beehive:
+            if p.bees:
+                return rANTdom_else_none(p.bees)
+            p = p.entrance
+        return None
         # END Problem 3 and 4
 
     def throw_at(self, target):
@@ -207,6 +214,7 @@ class ShortThrower(ThrowerAnt):
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 4
     implemented = False  # Change to True to view in the GUI
+
     # END Problem 4
 
 
