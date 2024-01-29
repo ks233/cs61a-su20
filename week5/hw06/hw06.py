@@ -212,6 +212,11 @@ def store_digits(n):
     >>> print("Do not use str or reversed!") if any([r in cleaned for r in ["str", "reversed"]]) else None
     """
     "*** YOUR CODE HERE ***"
+    ll = Link.empty  # ll = Linked List
+    while n:
+        ll = Link(n % 10, ll)
+        n = n // 10
+    return ll
 
 
 def path_yielder(t, value):
@@ -249,11 +254,24 @@ def path_yielder(t, value):
     [[0, 2], [0, 2, 1, 2]]
     """
 
+    '''
+    # 非generator的版本
+    paths = []
+    if t.label == value:
+        paths.append([t.label])
+    for b in t.branches:
+        for path in path_yielder(b, value):
+            paths.append([t.label] + path)
+    return paths
+    '''
     "*** YOUR CODE HERE ***"
+    if t.label == value:
+        yield [t.label]
 
-    for _______________ in _________________:
-        for _______________ in _________________:
+    for b in t.branches:
+        for path in path_yielder(b, value):
             "*** YOUR CODE HERE ***"
+            yield [t.label] + path
 
 
 def remove_all(link, value):
