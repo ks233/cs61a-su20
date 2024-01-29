@@ -254,7 +254,7 @@ def path_yielder(t, value):
     [[0, 2], [0, 2, 1, 2]]
     """
 
-    '''
+    """
     # 非generator的版本
     paths = []
     if t.label == value:
@@ -263,7 +263,7 @@ def path_yielder(t, value):
         for path in path_yielder(b, value):
             paths.append([t.label] + path)
     return paths
-    '''
+    """
     "*** YOUR CODE HERE ***"
     if t.label == value:
         yield [t.label]
