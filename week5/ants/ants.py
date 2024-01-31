@@ -411,8 +411,8 @@ class BodyguardAnt(ContainerAnt):
     # BEGIN Problem 9
     implemented = True  # Change to True to view in the GUI
 
-    def __init__(self, *args, armor=2):
-        super().__init__(*args, armor)
+    def __init__(self, armor=2):
+        ContainerAnt.__init__(self, armor)
 
     # END Problem 9
 
@@ -425,7 +425,7 @@ class TankAnt(ContainerAnt):
     food_cost = 6
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 10
-    implemented = False  # Change to True to view in the GUI
+    implemented = True  # Change to True to view in the GUI
     # END Problem 10
 
     def __init__(self, armor=2):
@@ -434,6 +434,9 @@ class TankAnt(ContainerAnt):
     def action(self, gamestate):
         # BEGIN Problem 10
         "*** YOUR CODE HERE ***"
+        for bee in list(self.place.bees):
+            bee.reduce_armor(self.damage)
+        ContainerAnt.action(self, gamestate)
         # END Problem 10
 
 
