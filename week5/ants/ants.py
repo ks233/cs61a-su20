@@ -125,7 +125,17 @@ class Ant(Insect):
             place.ant = self
         else:
             # BEGIN Problem 9
-            assert place.ant is None, "Two ants in {0}".format(place)
+            if isinstance(place.ant, ContainerAnt):
+                if place.ant.can_contain(self):
+                    place.ant.contain_ant(self)
+                else:
+                    assert False, "Two ants in {0}".format(place)
+            elif isinstance(self, ContainerAnt):
+                if self.can_contain(place.ant):
+                    self.contain_ant(place.ant)
+                place.ant = self
+            else:
+                assert False, "Two ants in {0}".format(place)
             # END Problem 9
         Insect.add_to(self, place)
 
@@ -340,8 +350,10 @@ class WallAnt(Ant):
     name = "Wall"
     food_cost = 4
     blocks_path = True
+
     def __init__(self, armor=4):
         super().__init__(armor)
+
 
 # END Problem 8
 
@@ -354,11 +366,17 @@ class ContainerAnt(Ant):
     def can_contain(self, other):
         # BEGIN Problem 9
         "*** YOUR CODE HERE ***"
+        if isinstance(other, ContainerAnt):
+            return False
+        if self.contained_ant:
+            return False
+        return True
         # END Problem 9
 
     def contain_ant(self, ant):
         # BEGIN Problem 9
         "*** YOUR CODE HERE ***"
+        self.contained_ant = ant
         # END Problem 9
 
     def remove_ant(self, ant):
@@ -379,6 +397,8 @@ class ContainerAnt(Ant):
     def action(self, gamestate):
         # BEGIN Problem 9
         "*** YOUR CODE HERE ***"
+        if self.contained_ant:
+            self.contained_ant.action(gamestate)
         # END Problem 9
 
 
@@ -389,7 +409,11 @@ class BodyguardAnt(ContainerAnt):
     food_cost = 4
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 9
-    implemented = False  # Change to True to view in the GUI
+    implemented = True  # Change to True to view in the GUI
+
+    def __init__(self, *args, armor=2):
+        super().__init__(*args, armor)
+
     # END Problem 9
 
 
