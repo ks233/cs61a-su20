@@ -266,7 +266,7 @@ class FireAnt(Ant):
         """
         # BEGIN Problem 5
         "*** YOUR CODE HERE ***"
-        bees = list(self.place.bees) # 复制一份，因为 reduce_armor 可能会对列表产生副作用
+        bees = list(self.place.bees)  # 复制一份，因为 reduce_armor 可能会对列表产生副作用
         Ant.reduce_armor(self, amount)
         dmg = amount
         if self.armor == 0:
@@ -335,6 +335,14 @@ class NinjaAnt(Ant):
 
 # BEGIN Problem 8
 # The WallAnt class
+class WallAnt(Ant):
+    implemented = True
+    name = "Wall"
+    food_cost = 4
+    blocks_path = True
+    def __init__(self, armor=4):
+        super().__init__(armor)
+
 # END Problem 8
 
 
