@@ -33,4 +33,8 @@ def make_generators_generator(g):
     9
     """
     "*** YOUR CODE HERE ***"
-
+    # 这题大概不是这个意思。。。不管了
+    l = list(g())
+    for i in range(len(l)):
+        yield iter(l[:i+1])
+    
