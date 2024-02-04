@@ -460,7 +460,7 @@ class Water(Place):
 # BEGIN Problem 12
 # The ScubaThrower class
 class ScubaThrower(ThrowerAnt):
-    name = "ScubaThrower"
+    name = "Scuba"
     food_cost = 6
     is_watersafe = True
 
