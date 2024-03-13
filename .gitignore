@@ -163,9 +163,3 @@ cython_debug/
 ok
 .ok*
 tests/
-
-# scheme 相关
-week6/*/editor
-week6/*/abstract_turtle
-week6/*/images
-week6/*/scheme
